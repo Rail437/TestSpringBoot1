@@ -1,6 +1,6 @@
 package com.example.TestClone1.service;
 
-import com.example.TestClone1.repositoryes.UserRepo;
+import com.example.TestClone1.repos.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

@@ -2,7 +2,7 @@ package com.example.TestClone1.controller;
 
 import com.example.TestClone1.domain.Message;
 import com.example.TestClone1.domain.User;
-import com.example.TestClone1.repositoryes.MessageRepository;
+import com.example.TestClone1.repos.MessageRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -15,40 +15,51 @@ import java.util.Map;
 @Controller
 public class MainController {
     @Autowired
-    private MessageRepository messageRepository;
+    private MessageRepo messageRepo;
 
     @GetMapping("/")
     public String greeting(Map<String, Object> model) {
         return "greeting";
     }
+
     @GetMapping("/main")
-    public String main(Map<String,Object> model){
-        Iterable<Message> messages = messageRepository.findAll();
+    public String main(Map<String, Object> model) {
+        Iterable<Message> messages = messageRepo.findAll();
+
         model.put("messages", messages);
+
         return "main";
     }
 
-    @PostMapping
-    public String add (
+    @PostMapping("/main")
+    public String add(
             @AuthenticationPrincipal User user,
             @RequestParam String text,
-            @RequestParam String tag, Map<String,Object> model){
+            @RequestParam String tag, Map<String, Object> model
+    ) {
         Message message = new Message(text, tag, user);
-        messageRepository.save(message);
 
-        Iterable<Message> messages = messageRepository.findAll();
+        messageRepo.save(message);
+
+        Iterable<Message> messages = messageRepo.findAll();
+
         model.put("messages", messages);
+
         return "main";
     }
+
     @PostMapping("filter")
-    public String filter (@RequestParam String filter, Map<String,Object> model){
+    public String filter(@RequestParam String filter, Map<String, Object> model) {
         Iterable<Message> messages;
-        if(filter != null && !filter.isEmpty()) {
-            messages = messageRepository.findByTag(filter);
+
+        if (filter != null && !filter.isEmpty()) {
+            messages = messageRepo.findByTag(filter);
         } else {
-            messages = messageRepository.findAll();
+            messages = messageRepo.findAll();
         }
+
         model.put("messages", messages);
+
         return "main";
     }
 }
