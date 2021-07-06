@@ -1,4 +1,4 @@
-package com.example.TestClone1.repositoryes;
+package com.example.TestClone1.repos;
 
 import com.example.TestClone1.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;

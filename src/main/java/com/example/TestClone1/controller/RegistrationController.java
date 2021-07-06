@@ -2,7 +2,7 @@ package com.example.TestClone1.controller;
 
 import com.example.TestClone1.domain.Role;
 import com.example.TestClone1.domain.User;
-import com.example.TestClone1.repositoryes.UserRepo;
+import com.example.TestClone1.repos.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,22 +15,25 @@ import java.util.Map;
 public class RegistrationController {
     @Autowired
     private UserRepo userRepo;
+
     @GetMapping("/registration")
-    public String registration(){
+    public String registration() {
         return "registration";
     }
 
     @PostMapping("/registration")
-    public String addUser(User user, Map<String, Object> model){
-        User userFromDB = userRepo.findByUsername(user.getUsername());
-        if(userFromDB != null){
+    public String addUser(User user, Map<String, Object> model) {
+        User userFromDb = userRepo.findByUsername(user.getUsername());
+
+        if (userFromDb != null) {
             model.put("message", "User exists!");
             return "registration";
         }
+
         user.setActive(true);
         user.setRoles(Collections.singleton(Role.USER));
         userRepo.save(user);
+
         return "redirect:/login";
     }
-
 }
